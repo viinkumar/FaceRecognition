@@ -1,32 +1,3 @@
-//////////////////////////////////////////////////////////////////////////////////////
-// OnlineFaceRec.cpp, by Shervin Emami (www.shervinemami.info) on 30th Dec 2011.
-// Online Face Recognition from a camera using Eigenfaces.
-//////////////////////////////////////////////////////////////////////////////////////
-//
-// Some parts are based on the code example by Robin Hewitt (2007) at:
-// "http://www.cognotics.com/opencv/servo_2007_series/part_5/index.html"
-//
-// Command-line Usage (for offline mode, without a webcam):
-//
-// First, you need some face images. I used the ORL face database.
-// You can download it for free at
-//    www.cl.cam.ac.uk/research/dtg/attarchive/facedatabase.html
-//
-// List the training and test face images you want to use in the
-// input files train.txt and test.txt. (Example input files are provided
-// in the download.) To use these input files exactly as provided, unzip
-// the ORL face database, and place train.txt, test.txt, and eigenface.exe
-// at the root of the unzipped database.
-//
-// To run the learning phase of eigenface, enter in the command prompt:
-//    OnlineFaceRec train <train_file>
-// To run the recognition phase, enter:
-//    OnlineFaceRec test <test_file>
-// To run online recognition from a camera, enter:
-//    OnlineFaceRec
-//
-//////////////////////////////////////////////////////////////////////////////////////
-
 #include <stdio.h>
 #if defined WIN32 || defined _WIN32
 	#include <conio.h>		// For _kbhit() on Windows
@@ -64,11 +35,11 @@ int SAVE_EIGENFACE_IMAGES = 1;		// Set to 0 if you dont want images of the Eigen
 IplImage ** faceImgArr        = 0; // array of face images
 CvMat    *  personNumTruthMat = 0; // array of person numbers
 //#define	MAX_NAME_LENGTH 256		// Give each name a fixed size for easier code.
-//char **personNames = 0;			// array of person names (indexed by the person number). Added by Shervin.
-vector<string> personNames;			// array of person names (indexed by the person number). Added by Shervin.
-int faceWidth = 120;	// Default dimensions for faces in the face recognition database. Added by Shervin.
+//char **personNames = 0;			// array of person names (indexed by the person number).
+vector<string> personNames;			// array of person names (indexed by the person number).
+int faceWidth = 120;	// Default dimensions for faces in the face recognition database.
 int faceHeight = 90;	//	"		"		"		"		"		"		"		"
-int nPersons                  = 0; // the number of people in the training set. Added by Shervin.
+int nPersons                  = 0; // the number of people in the training set.
 int nTrainFaces               = 0; // the number of training images
 int nEigens                   = 0; // the number of eigenvalues
 IplImage * pAvgTrainImg       = 0; // the average image
@@ -102,7 +73,7 @@ CvMat* retrainOnline(void);
 // Show how to use this program from the command-line.
 void printUsage()
 {
-	printf("OnlineFaceRec, created by Shervin Emami (www.shervinemami.co.cc), 2nd Jun 2010.\n"
+	printf("OnlineFaceRec, created by  Vipin\n"
 		"Usage: OnlineFaceRec [<command>] \n"
 		"  Valid commands are: \n"
 		"    train <train_file> \n"
@@ -286,7 +257,7 @@ int loadTrainingData(CvMat ** pTrainPersonNumMat)
 		return 0;
 	}
 
-	// Load the person names. Added by Shervin.
+	// Load the person names.
 	personNames.clear();	// Make sure it starts as empty.
 	nPersons = cvReadIntByName( fileStorage, 0, "nPersons", 0 );
 	if (nPersons == 0) {
@@ -342,7 +313,7 @@ void storeTrainingData()
 	// create a file-storage interface
 	fileStorage = cvOpenFileStorage( "facedata.xml", 0, CV_STORAGE_WRITE );
 
-	// Store the person names. Added by Shervin.
+	// Store the person names.
 	cvWriteInt( fileStorage, "nPersons", nPersons );
 	for (i=0; i<nPersons; i++) {
 		char varname[200];
@@ -803,8 +774,8 @@ CvMat* retrainOnline(void)
 	}
 	cvFree( &faceImgArr ); // array of face images
 	cvFree( &personNumTruthMat ); // array of person numbers
-	personNames.clear();			// array of person names (indexed by the person number). Added by Shervin.
-	nPersons = 0; // the number of people in the training set. Added by Shervin.
+	personNames.clear();			// array of person names (indexed by the person number).
+	nPersons = 0; // the number of people in the training set.
 	nTrainFaces = 0; // the number of training images
 	nEigens = 0; // the number of eigenvalues
 	cvReleaseImage( &pAvgTrainImg ); // the average image
